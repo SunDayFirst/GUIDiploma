@@ -34,10 +34,10 @@ namespace GUIDiploma
         // current incoming data
         public void SetInputData(DataGridView dgw)
         {
-            Dictionary<string, int> inputData = m_net.GetCurrentInput();
+            List<Tuple<string, int>> inputData = m_net.GetCurrentInput();
             foreach (var data in inputData)
             {                
-                dgw.Rows[0].Cells[data.Key].Value = data.Value;
+                dgw.Rows[0].Cells[data.Item1].Value = data.Item2;
             }
         }
         // current petri state
