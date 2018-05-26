@@ -6,10 +6,19 @@ using System.Threading.Tasks;
 
 namespace CoreDiploma
 {
-    interface IGenerator
+    public enum GeneratorState
     {
+        ON,
+        OFF,
+        GOOD_WORK,
+        BAD_WORK
+    }
+
+    public interface IGenerator
+    {
+        void Reset();
         Tuple<string, int> MakeData();
         Tuple<string, int> MakeStartData();
-        void Switch();
+        void Switch(GeneratorState switchTo = GeneratorState.OFF);
     }
 }

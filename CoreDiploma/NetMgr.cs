@@ -38,6 +38,7 @@ namespace CoreDiploma
             switch (m_step)
             {
                 case PetriNetStep.READY:
+                    NextInput();
                     m_net.LoadInfo(m_currentInput);
                     m_step = PetriNetStep.INPUT;
                     break;
@@ -83,11 +84,23 @@ namespace CoreDiploma
             m_genMgr.SwitchGenerator(num);
         }
 
+        public void Reset()
+        {
+            // reset net
+            m_net.Reset();
+            // reset generators
+            m_genMgr.Reset();
+            // set state to ready
+            m_step = PetriNetStep.READY;
+        }
+
 
         // members
         private PetriNetStep m_step = PetriNetStep.READY;
         private GeneratorsMgr m_genMgr;
         private PetriNet m_net;
         private List<Tuple<string, int>> m_currentInput; // input for current iteration
+
+
     }
 }

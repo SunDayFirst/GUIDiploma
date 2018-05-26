@@ -19,6 +19,7 @@ namespace CoreDiploma
         public int cellSize;
         public int wCoast;
         public int aCoast;
+        public int modelTime;
     }
 
     public class PetriNet
@@ -123,6 +124,15 @@ namespace CoreDiploma
                     pc.Value.ResetFlush();
         }
 
+        public void Reset()
+        {
+            // reset all PC
+            foreach (var pc in m_pcStorage)
+                pc.Value.Reset();
+            // reset all FlushSpots
+            foreach (var flush in m_flushes)
+                flush.Reset();
+        }
 
 
         // view i-face

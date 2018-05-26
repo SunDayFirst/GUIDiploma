@@ -17,6 +17,11 @@ namespace GUIDiploma
         {
             InitializeComponent();
             OnLoad();
+            NetCtrl.StatsControls statCtrls = new NetCtrl.StatsControls();
+            statCtrls.m_netState = dataGW;
+            statCtrls.m_currentModelTime = currentModelTime_lbl;
+            statCtrls.m_currentNetStep = step_lbl;
+            m_netCtrl.SetStatControls(statCtrls);
         }
 
         // members
@@ -28,6 +33,7 @@ namespace GUIDiploma
             cellSize_tbx.Text = Convert.ToString(5);
             wCoast_tbx.Text = Convert.ToString(2);
             aCoast_tbx.Text = Convert.ToString(2);
+            modelTime_tbx.Text = Convert.ToString(60);
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -38,6 +44,7 @@ namespace GUIDiploma
             netParams.cellSize = int.Parse(cellSize_tbx.Text);
             netParams.wCoast = int.Parse(wCoast_tbx.Text);
             netParams.aCoast = int.Parse(aCoast_tbx.Text);
+            netParams.modelTime = int.Parse(modelTime_tbx.Text);
 
             // initialize
             for (int i = 0; i < netParams.netSize; ++i)
@@ -111,5 +118,14 @@ namespace GUIDiploma
             m_netCtrl.SwitchGenerator(4);
         }
 
+        private void start_btn_Click(object sender, EventArgs e)
+        {
+            m_netCtrl.Start();
+        }
+
+        private void stop_btn_Click(object sender, EventArgs e)
+        {
+            m_netCtrl.Stop();
+        }
     }
 }

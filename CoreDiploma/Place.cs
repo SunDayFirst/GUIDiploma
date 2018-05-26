@@ -28,5 +28,10 @@ namespace CoreDiploma
             return m_markCount;
         }
         private int m_markCount;
+
+        internal void Reset()
+        {
+            m_markCount = 0;
+        }
     }
 }

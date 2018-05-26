@@ -15,8 +15,10 @@ namespace CoreDiploma
         /// <param name="countPC"> number of PC in net </param>
         public GeneratorsMgr(int countPC)
         {
+            GeneratorFactory factory = new GeneratorFactory();
+            int modellingTime = 60;
             for (int i = 0; i < countPC; ++i)
-                m_generators.Add(new Generator(i.ToString()));
+                m_generators.Add(factory.GetScenarioGenerator(modellingTime, i.ToString()));
         }
 
         /// <summary>
@@ -57,7 +59,20 @@ namespace CoreDiploma
             m_generators[num].Switch();
         }
 
+        private void GetGenerators()
+        {
+
+        }
+
+        internal void Reset()
+        {
+            foreach (var gen in m_generators)
+                gen.Reset();
+        }
+
         // members
         private List<IGenerator> m_generators = new List<IGenerator>();
+
+
     }
 }

@@ -6,12 +6,6 @@ using System.Threading.Tasks;
 
 namespace CoreDiploma
 {
-    public enum GeneratorState
-    {
-        ON,
-        OFF
-    }
-
     class Generator : IGenerator
     {
         public Generator(string pcName)
@@ -40,12 +34,17 @@ namespace CoreDiploma
             return new Tuple<string, int>(m_pcName, 1);        
         }
 
-        public void Switch() // @AU switch to bool?
+        public void Switch(GeneratorState switchTo = GeneratorState.OFF) // @AU switch to bool?
         {
             if (m_state == GeneratorState.OFF)
                 m_state = GeneratorState.ON;
             else
                 m_state = GeneratorState.OFF;
+        }
+
+        public void Reset()
+        {
+            ;
         }
 
         // members

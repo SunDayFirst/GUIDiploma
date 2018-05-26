@@ -39,9 +39,16 @@ namespace CoreDiploma
             return m_store.GetCount();
         }
 
+        public void Reset()
+        {
+            m_store.Reset();
+        }
+
         // members
         private Transition m_incomingT = new Transition();
         private Place m_store = new Place();
         private int m_transitionCoast = 1;
+
+
     }
 }

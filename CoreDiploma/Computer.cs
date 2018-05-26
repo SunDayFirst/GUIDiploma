@@ -30,6 +30,15 @@ namespace CoreDiploma
             m_localFlushAnalyzer.AddPlaceIn(m_warning, 1);
             m_localFlushAnalyzer.AddPlaceOut(m_localFlush);
         }
+
+        public void Reset()
+        {
+            // reset all places
+            m_input.Reset();
+            m_warning.Reset();
+            m_alert.Reset();
+            m_localFlush.Reset();
+        }
         // Remove()
         // Pause()
         // Resume()
