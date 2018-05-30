@@ -9,8 +9,6 @@ using CoreDiploma;
 
 namespace GUIDiploma
 {
-
-
     public class NetCtrl
     {
         public class StatsControls
@@ -18,6 +16,7 @@ namespace GUIDiploma
             public DataGridView m_netState;
             public Label m_currentModelTime;
             public Label m_currentNetStep;
+            public Label m_inform;
         }
 
         public void Initialize(NetParams netParams)
@@ -92,6 +91,26 @@ namespace GUIDiploma
                     dgw.Rows[4].Cells[fkCnt++].Value = fl; 
             }
         }
+        
+        public void SetCurrentAllertInfo(Label infoLbl)
+        {
+            List<string> allertPC = m_net.GetCurrentAlertInfo();
+            if (allertPC.Count > 0)
+            {
+                StringBuilder text = new StringBuilder();
+                foreach (var pc in allertPC)
+                {
+                    text.Append( m_curModelTime.ToString() +  ": Компьютер [" + pc + "] требует внимания администратора\n");
+                }
+                Action informAction = () =>
+                {
+                    infoLbl.Text = text.ToString();
+                };
+                infoLbl.Invoke(informAction);
+            }
+
+        }
+
         // current petri step 
         public void SetNetStep(Label tbx)
         {
@@ -128,17 +147,19 @@ namespace GUIDiploma
         public void Start()
         {
             Reset();
-            m_timer.Change(0, 1000);
+            m_timer.Change(0, 300);
         }
 
         public void OnTimer(object target)
         {
             if ( m_curModelTime < m_modelTime)
             {
-                ++m_curModelTime;
+
                 m_net.NextStep();
                 SetNetState(m_statCtrl.m_netState);
                 SetNetStep(m_statCtrl.m_currentNetStep);
+                if (m_net.GetNetStep() == PetriNetStep.READY)
+                    ++m_curModelTime;
                 SetInputData(m_statCtrl.m_netState);
                 Action action = () =>
                 {
@@ -146,10 +167,14 @@ namespace GUIDiploma
                 };
                 m_statCtrl.m_currentModelTime.Invoke(action);
 
+                SetCurrentAllertInfo(m_statCtrl.m_inform);
+
+
+
             }
             else
             {
-                // stop this
+                // stop this and save results
                 m_timer.Change(0, Timeout.Infinite);
             }
         }

@@ -21,6 +21,7 @@ namespace GUIDiploma
             statCtrls.m_netState = dataGW;
             statCtrls.m_currentModelTime = currentModelTime_lbl;
             statCtrls.m_currentNetStep = step_lbl;
+            statCtrls.m_inform = infor_lbl;
             m_netCtrl.SetStatControls(statCtrls);
         }
 
@@ -45,6 +46,9 @@ namespace GUIDiploma
             netParams.wCoast = int.Parse(wCoast_tbx.Text);
             netParams.aCoast = int.Parse(aCoast_tbx.Text);
             netParams.modelTime = int.Parse(modelTime_tbx.Text);
+
+            //clear
+            dataGW.Columns.Clear();
 
             // initialize
             for (int i = 0; i < netParams.netSize; ++i)

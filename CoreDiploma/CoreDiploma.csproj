@@ -44,16 +44,16 @@
   <ItemGroup>
     <Compile Include="Computer.cs" />
     <Compile Include="FlushSpot.cs" />
-    <Compile Include="Generator.cs" />
-    <Compile Include="GeneratorFactory.cs" />
-    <Compile Include="GeneratorsMgr.cs" />
-    <Compile Include="IGenerator.cs" />
+    <Compile Include="Generators\Generator.cs" />
+    <Compile Include="Generators\GeneratorFactory.cs" />
+    <Compile Include="Generators\GeneratorsMgr.cs" />
+    <Compile Include="Generators\IGenerator.cs" />
     <Compile Include="NetMgr.cs" />
     <Compile Include="PetriNet.cs" />
     <Compile Include="Place.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ScenarioGenerator.cs" />
+    <Compile Include="Generators\ScenarioGenerator.cs" />
     <Compile Include="Transition.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -7,18 +7,47 @@ using System.Threading.Tasks;
 
 namespace CoreDiploma
 {
+    enum Scenario
+    {
+
+    }
     public class GeneratorsMgr
     {
         /// <summary>
         /// Make pool of generators wthi number as PC name
         /// </summary>
         /// <param name="countPC"> number of PC in net </param>
-        public GeneratorsMgr(int countPC)
+        public GeneratorsMgr(int countPC, int modelTime)
+        {
+            m_modelingTime = modelTime;
+            GoodServiceScenario(countPC);
+        }
+
+
+        public void GoodWorkScenario(int countPC)
+        {
+            GeneratorFactory factory = new GeneratorFactory();            
+            for (int i = 0; i < countPC; ++i)
+                m_generators.Add(factory.GetScenarioGenerator(m_modelingTime, i.ToString()));
+        }
+
+        public void GoodServiceScenario(int countPC)
         {
             GeneratorFactory factory = new GeneratorFactory();
-            int modellingTime = 60;
             for (int i = 0; i < countPC; ++i)
-                m_generators.Add(factory.GetScenarioGenerator(modellingTime, i.ToString()));
+                m_generators.Add(new ScenarioGenerator(m_modelingTime, GeneratorState.BAD_WORK, i.ToString(), 5, 25));
+        }
+
+        public void GoodWorkWIthTreatScenario(int countPC)
+        {
+            GeneratorFactory factory = new GeneratorFactory();
+            for (int i = 0; i < countPC; ++i)
+            {
+                if (i%5 != 0)
+                    m_generators.Add(factory.GetScenarioGenerator(m_modelingTime, i.ToString()));
+                else
+                    m_generators.Add(new ScenarioGenerator(m_modelingTime, GeneratorState.BAD_WORK, i.ToString(), 5, m_modelingTime));
+            }
         }
 
         /// <summary>
@@ -72,7 +101,7 @@ namespace CoreDiploma
 
         // members
         private List<IGenerator> m_generators = new List<IGenerator>();
-
+        private int m_modelingTime;
 
     }
 }

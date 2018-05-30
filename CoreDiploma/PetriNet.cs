@@ -33,7 +33,7 @@ namespace CoreDiploma
         {
             foreach (var d in data)
             {
-                AddPC(d.Key);
+                AddPC(d.Key, m_netParams);
             }
         }
 
@@ -50,18 +50,17 @@ namespace CoreDiploma
                     m_pcStorage[d.Item1].AddInput(d.Item2);
                 else // add new pc
                 {
-                    AddPC(d.Item1);
+                    AddPC(d.Item1, m_netParams);
                     m_pcStorage[d.Item1].AddInput(d.Item2);
                 }
-
             }
         }
 
-        public bool AddPC(string name)
+        public bool AddPC(string name, NetParams netParams)
         {
             if (m_pcStorage.ContainsKey(name))
                 return false;
-            Computer newPc = new Computer(name);
+            Computer newPc = new Computer(name, netParams);
             SetFlushToPC(newPc);
             m_pcStorage.Add(name, newPc);
             return true;
@@ -112,6 +111,11 @@ namespace CoreDiploma
             foreach (var pc in m_pcStorage)
                 pc.Value.TryAlert();
         }
+        public void LocalFlushStep()
+        {
+            foreach (var pc in m_pcStorage)
+                pc.Value.TryLocalFlush();
+        }
 
         /// <summary>
         /// Check every PC
@@ -119,9 +123,13 @@ namespace CoreDiploma
         /// </summary>
         public void CheckStep()
         {
+            m_currentAlertInform.Clear();
             foreach (var pc in m_pcStorage)
                 if (!pc.Value.CheckAlert())
-                    pc.Value.ResetFlush();
+                {
+                    m_currentAlertInform.Add(pc.Key);
+                    //   pc.Value.ResetFlush();
+                }
         }
 
         public void Reset()
@@ -150,6 +158,10 @@ namespace CoreDiploma
                 flushData.Add(fl.MarksCount());
         }
 
+        public List<string> GetCurrentAllertInfo()
+        {
+            return m_currentAlertInform;
+        }
 
         // properties
         /// <summary>
@@ -171,5 +183,6 @@ namespace CoreDiploma
         private List<FlushSpot> m_flushes = new List<FlushSpot>();
         private int m_cellSize = 5;
         private NetParams m_netParams = new NetParams();
+        private List<string> m_currentAlertInform= new List<string>();
     }
 }

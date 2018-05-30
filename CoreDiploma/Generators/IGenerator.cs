@@ -11,7 +11,8 @@ namespace CoreDiploma
         ON,
         OFF,
         GOOD_WORK,
-        BAD_WORK
+        BAD_WORK,
+        GOOD_SERVICE
     }
 
     public interface IGenerator

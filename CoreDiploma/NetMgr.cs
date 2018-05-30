@@ -19,7 +19,7 @@ namespace CoreDiploma
         public void Initialize(NetParams netParams)
         {
             // first generators
-            m_genMgr = new GeneratorsMgr(netParams.netSize);
+            m_genMgr = new GeneratorsMgr(netParams.netSize, netParams.modelTime);
             // second net
             m_net = new PetriNet();
             m_net.Initialize(netParams);
@@ -35,6 +35,7 @@ namespace CoreDiploma
         // next step
         public void NextStep()
         {
+            
             switch (m_step)
             {
                 case PetriNetStep.READY:
@@ -51,11 +52,17 @@ namespace CoreDiploma
                     m_step = PetriNetStep.WARNING;
                     break;
                 case PetriNetStep.WARNING:
+                    if (++m_localFLushReady % 5 == 0)
+                    {
+                        m_localFLushReady = 0;
+                        m_net.LocalFlushStep();
+                    }
                     m_net.AlertStep();
                     m_step = PetriNetStep.ALERT;
                     break;
                 case PetriNetStep.ALERT:
-                    // here we need to get new data
+                    // here we need to get new data, may be set generators' output
+                    m_net.CheckStep();
                     m_step = PetriNetStep.READY;
                     break;
             }
@@ -71,6 +78,11 @@ namespace CoreDiploma
         public void GetNetState(out Dictionary<string, PCState> pcStates, out List<int> flushData)
         {
             m_net.GetStateMtx(out pcStates, out flushData);
+        }
+
+        public List<string> GetCurrentAlertInfo()
+        {
+            return m_net.GetCurrentAllertInfo();
         }
 
         public PetriNetStep GetNetStep()
@@ -96,11 +108,11 @@ namespace CoreDiploma
 
 
         // members
+        private int m_localFLushReady;
         private PetriNetStep m_step = PetriNetStep.READY;
         private GeneratorsMgr m_genMgr;
         private PetriNet m_net;
         private List<Tuple<string, int>> m_currentInput; // input for current iteration
-
 
     }
 }

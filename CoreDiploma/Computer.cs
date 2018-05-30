@@ -20,9 +20,12 @@ namespace CoreDiploma
         /// C-tor with comp name
         /// </summary>
         /// <param name="name"></param>
-        public Computer(string name)
+        public Computer(string name, NetParams netParams)
         {
             m_name = name;
+            m_warningCoast = netParams.wCoast;
+            m_alertCoast = netParams.aCoast;
+
             m_warningAnalyzer.AddPlaceIn(m_input, m_warningCoast);
             m_warningAnalyzer.AddPlaceOut(m_warning);
             m_alertAnalyzer.AddPlaceIn(m_warning, m_alertCoast);
@@ -65,11 +68,16 @@ namespace CoreDiploma
         {
             m_alertAnalyzer.CheckAndMake();
         }
+        public void TryLocalFlush()
+        {
+            m_localFlushAnalyzer.CheckAndMake();
+        }
 
         public void AddInput(int mark)
         {
             m_input.AddMarks(mark);
         }
+
 
         /// <summary>
         /// Remove itself from previous flush
@@ -101,6 +109,6 @@ namespace CoreDiploma
         private Transition m_localFlushAnalyzer = new Transition();
         private Place m_localFlush = new Place();
         private int m_warningCoast = 2;
-        private int m_alertCoast = 2;
+        private int m_alertCoast = 3;
     }
 }
