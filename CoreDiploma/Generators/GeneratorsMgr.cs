@@ -7,10 +7,6 @@ using System.Threading.Tasks;
 
 namespace CoreDiploma
 {
-    enum Scenario
-    {
-
-    }
     public class GeneratorsMgr
     {
         /// <summary>
@@ -20,7 +16,9 @@ namespace CoreDiploma
         public GeneratorsMgr(int countPC, int modelTime)
         {
             m_modelingTime = modelTime;
-            GoodServiceScenario(countPC);
+            //GoodServiceScenario(countPC);
+            GoodWorkWIthTreatScenario(countPC);
+            //GoodWorkScenario(countPC);
         }
 
 
@@ -35,7 +33,7 @@ namespace CoreDiploma
         {
             GeneratorFactory factory = new GeneratorFactory();
             for (int i = 0; i < countPC; ++i)
-                m_generators.Add(new ScenarioGenerator(m_modelingTime, GeneratorState.BAD_WORK, i.ToString(), 5, 25));
+                m_generators.Add(new ScenarioGenerator(m_modelingTime, GeneratorState.BAD_WORK, i.ToString(), 5, 45));
         }
 
         public void GoodWorkWIthTreatScenario(int countPC)
@@ -53,7 +51,7 @@ namespace CoreDiploma
         /// <summary>
         /// Generate start data for all PC
         /// </summary>
-        /// <returns>one mark for every pc in pool</returns>
+        /// <returns>one bad mark for every pc in pool</returns>
         public Dictionary<string, int> MakeStartData()
         {
             Dictionary<string, int> result = new Dictionary<string, int>();
@@ -68,29 +66,16 @@ namespace CoreDiploma
         /// <summary>
         /// Generate data for all PC
         /// </summary>
-        /// <returns>not null marks for pc</returns>
+        /// <returns>all marks for pc</returns>
         public List<Tuple<string, int>> MakeData()
         {
             List<Tuple<string, int>> result = new List<Tuple<string, int>>();
             foreach (var gen in m_generators)
             {
                 Tuple<string,int> curData = gen.MakeData();
-                if (curData.Item2 > 0)
-                    result.Add(curData);
+                result.Add(curData);
             }
             return result;
-        }
-
-        // control
-        public void SwitchGenerator(int num)
-        {
-            Debug.Assert(m_generators.Count > num); // @AU remove with if
-            m_generators[num].Switch();
-        }
-
-        private void GetGenerators()
-        {
-
         }
 
         internal void Reset()
@@ -102,6 +87,5 @@ namespace CoreDiploma
         // members
         private List<IGenerator> m_generators = new List<IGenerator>();
         private int m_modelingTime;
-
     }
 }

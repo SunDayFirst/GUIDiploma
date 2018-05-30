@@ -90,11 +90,6 @@ namespace CoreDiploma
             return m_step;
         }
 
-        // control functions
-        public void SwitchGenerator(int num)
-        {
-            m_genMgr.SwitchGenerator(num);
-        }
 
         public void Reset()
         {
@@ -106,13 +101,11 @@ namespace CoreDiploma
             m_step = PetriNetStep.READY;
         }
 
-
         // members
         private int m_localFLushReady;
         private PetriNetStep m_step = PetriNetStep.READY;
         private GeneratorsMgr m_genMgr;
         private PetriNet m_net;
         private List<Tuple<string, int>> m_currentInput; // input for current iteration
-
     }
 }

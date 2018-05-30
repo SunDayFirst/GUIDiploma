@@ -63,16 +63,10 @@ namespace CoreDiploma
             ++m_indx;
             m_indx %= m_data.Length - 1; // закольцевать, что б не проверять на выход за границы
             return new Tuple<string, int>(m_pcName, m_data[m_indx]);
-
         }
         public Tuple<string, int> MakeStartData()
         {
             return new Tuple<string, int>(m_pcName, m_data[0]);
-        }
-
-        public void Switch(GeneratorState switchTo = GeneratorState.OFF)
-        {
-            throw new NotImplementedException();
         }
 
         public void Reset()

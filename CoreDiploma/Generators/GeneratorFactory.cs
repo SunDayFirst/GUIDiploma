@@ -12,10 +12,7 @@ namespace CoreDiploma
         {
             return new Generator(name);
         }
-        //  public List<IGenerator> GetScenarioGenerator(int countPC)
-        //  {
-        //      List<IGenerator> result = new List<IGenerator>();
-        //  }
+
         public IGenerator GetScenarioGenerator(int modTime, string name, GeneratorState state  = GeneratorState.GOOD_WORK)
         {
             return new ScenarioGenerator(modTime, state, name);

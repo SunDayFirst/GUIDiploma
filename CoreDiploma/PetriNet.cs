@@ -142,7 +142,6 @@ namespace CoreDiploma
                 flush.Reset();
         }
 
-
         // view i-face
         public void GetStateMtx(out Dictionary<string, PCState> pcStates, out List<int> flushData)
         {

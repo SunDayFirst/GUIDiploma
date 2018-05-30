@@ -16,7 +16,6 @@ namespace CoreDiploma
         public void RemoveMarks(int cnt = 1)
         {
             m_markCount -= cnt;
-            // assert m_markCount >= 0
             Debug.Assert(m_markCount >= 0);
         }
         public bool IfHasMarks(int cnt)
@@ -27,11 +26,11 @@ namespace CoreDiploma
         {
             return m_markCount;
         }
-        private int m_markCount;
-
         internal void Reset()
         {
             m_markCount = 0;
         }
+        // members
+        private int m_markCount;
     }
 }

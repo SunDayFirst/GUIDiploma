@@ -27,24 +27,10 @@ namespace GUIDiploma
             m_timer = new System.Threading.Timer(tm, 0,Timeout.Infinite, 1000);
         }
 
-        public void DoNextData()
-        {
-            m_net.NextInput();
-        }
 
         public void SetStatControls(NetCtrl.StatsControls statCtrls)
         {
             m_statCtrl = statCtrls;
-        }
-
-        public void DoNextStep()
-        {
-            m_net.NextStep();
-        }
-
-        public void SwitchGenerator(int num)
-        {
-            m_net.SwitchGenerator(num);
         }
 
         // current incoming data
@@ -58,8 +44,23 @@ namespace GUIDiploma
             List<Tuple<string, int>> inputData = m_net.GetCurrentInput();
             foreach (var data in inputData)      
                 dgw.Rows[0].Cells[data.Item1].Value = data.Item2;
-
         }
+
+        public void SaveInputData()
+        {
+            List<Tuple<string, int>> inputData = m_net.GetCurrentInput();
+            string filname = "InputData.csv";
+            StringBuilder dataString = new StringBuilder();
+            foreach (var data in inputData)
+                dataString.Append(data.Item2.ToString() + ";");
+
+            using (System.IO.StreamWriter file =
+                new System.IO.StreamWriter(@filname, true))
+            {
+                file.WriteLine(dataString.ToString());
+            }
+        }
+
         // current petri state
         public void SetNetState(DataGridView dgw)
         {
@@ -108,7 +109,6 @@ namespace GUIDiploma
                 };
                 infoLbl.Invoke(informAction);
             }
-
         }
 
         // current petri step 
@@ -144,33 +144,35 @@ namespace GUIDiploma
             }
         }
 
+        public void SetCurrentTime(Label curTimeLbl)
+        {
+            Action action = () =>
+            {
+                curTimeLbl.Text = m_curModelTime.ToString();
+            };
+            curTimeLbl.Invoke(action);
+        }
+
         public void Start()
         {
             Reset();
-            m_timer.Change(0, 300);
+            m_timer.Change(0, 150);
         }
 
         public void OnTimer(object target)
         {
             if ( m_curModelTime < m_modelTime)
             {
-
+                if (m_net.GetNetStep() == PetriNetStep.READY)
+                    ++m_curModelTime;
+                else if (m_net.GetNetStep() == PetriNetStep.INPUT)
+                    SaveInputData();
                 m_net.NextStep();
                 SetNetState(m_statCtrl.m_netState);
                 SetNetStep(m_statCtrl.m_currentNetStep);
-                if (m_net.GetNetStep() == PetriNetStep.READY)
-                    ++m_curModelTime;
                 SetInputData(m_statCtrl.m_netState);
-                Action action = () =>
-                {
-                    m_statCtrl.m_currentModelTime.Text = m_curModelTime.ToString(); 
-                };
-                m_statCtrl.m_currentModelTime.Invoke(action);
-
+                SetCurrentTime(m_statCtrl.m_currentModelTime);
                 SetCurrentAllertInfo(m_statCtrl.m_inform);
-
-
-
             }
             else
             {

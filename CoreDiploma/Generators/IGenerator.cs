@@ -20,6 +20,5 @@ namespace CoreDiploma
         void Reset();
         Tuple<string, int> MakeData();
         Tuple<string, int> MakeStartData();
-        void Switch(GeneratorState switchTo = GeneratorState.OFF);
     }
 }

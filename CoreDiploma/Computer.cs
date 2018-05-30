@@ -6,14 +6,6 @@ using System.Threading.Tasks;
 
 namespace CoreDiploma
 {
-    enum MashineStatus
-    {
-        OK,
-        Not_OK,
-        Paused
-    }
-   
-
     class Computer
     {
         /// <summary>
@@ -42,9 +34,6 @@ namespace CoreDiploma
             m_alert.Reset();
             m_localFlush.Reset();
         }
-        // Remove()
-        // Pause()
-        // Resume()
 
         /// <summary>
         /// Check if mark count in alert place more then critical value
@@ -52,9 +41,8 @@ namespace CoreDiploma
         /// <returns>True if no alerts</returns>
         public bool CheckAlert()
         {
-            if (m_alert.IfHasMarks(1))
+            if (m_alert.GetCount() == 1) // hack to keep first time alert
             {
-                m_status = MashineStatus.Not_OK;
                 return false;
             }
             return true;
@@ -102,7 +90,6 @@ namespace CoreDiploma
         private Place m_input = new Place();
         private Transition m_warningAnalyzer = new Transition();
         private Place m_warning = new Place();
-        private MashineStatus m_status = MashineStatus.OK;
         private FlushSpot m_flush;
         private Transition m_alertAnalyzer = new Transition();
         private Place m_alert = new Place();

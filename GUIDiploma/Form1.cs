@@ -33,7 +33,7 @@ namespace GUIDiploma
             netSize_tbx.Text = Convert.ToString(15);
             cellSize_tbx.Text = Convert.ToString(5);
             wCoast_tbx.Text = Convert.ToString(2);
-            aCoast_tbx.Text = Convert.ToString(2);
+            aCoast_tbx.Text = Convert.ToString(3);
             modelTime_tbx.Text = Convert.ToString(60);
         }
 
@@ -72,55 +72,6 @@ namespace GUIDiploma
             // initialixe petri net
             m_netCtrl.Initialize(netParams);            
         }      
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-            // do next step
-            m_netCtrl.DoNextStep();
-            // load 
-            m_netCtrl.SetNetState(dataGW);
-            m_netCtrl.SetNetStep(step_lbl);
-        }
-
-        private void nextData_btn_Click(object sender, EventArgs e)
-        {
-            // generate next data
-            m_netCtrl.DoNextData();
-                      
-            // clear previous data
-            for (int i = 0; i < dataGW.Columns.Count; ++i)
-            {
-                dataGW[i, 0].Value = null;
-            }
-            
-            // show next data
-            m_netCtrl.SetInputData(dataGW);
-        }
-
-        private void b0_Click(object sender, EventArgs e)
-        {
-            m_netCtrl.SwitchGenerator(0);
-        }
-
-        private void b1_Click(object sender, EventArgs e)
-        {
-            m_netCtrl.SwitchGenerator(1);
-        }
-
-        private void b2_Click(object sender, EventArgs e)
-        {
-            m_netCtrl.SwitchGenerator(2);
-        }
-
-        private void b3_Click(object sender, EventArgs e)
-        {
-            m_netCtrl.SwitchGenerator(3);
-        }
-
-        private void b4_Click(object sender, EventArgs e)
-        {
-            m_netCtrl.SwitchGenerator(4);
-        }
 
         private void start_btn_Click(object sender, EventArgs e)
         {
