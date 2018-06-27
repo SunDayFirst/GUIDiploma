@@ -9,14 +9,14 @@ namespace CoreDiploma
     
     class ScenarioGenerator : IGenerator
     {
-        public ScenarioGenerator(int modelTime, GeneratorState state, string name)
+        public ScenarioGenerator(int modelTime, Scenario state, string name)
         {
             if (modelTime <= 0)
                 throw new ArgumentNullException();
 
             m_pcName = name;
             m_data = new int[modelTime];
-            if ( state == GeneratorState.GOOD_WORK)
+            if ( state == Scenario.GOOD_WORK)
             {
                 int noBadTime = 0;
                 int summ = 0;
@@ -38,7 +38,7 @@ namespace CoreDiploma
 
                 double per = (double)summ / modelTime;
             }
-            else if(state == GeneratorState.BAD_WORK)
+            else if(state == Scenario.BAD_WORK)
             {
                 for (int i = 0; i < modelTime; ++i)
                 {
@@ -51,10 +51,10 @@ namespace CoreDiploma
             }
         }
 
-        public ScenarioGenerator(int modelTime, GeneratorState state, string name, int timeFrom, int timeTo)
-            : this(modelTime, GeneratorState.GOOD_WORK, name)
+        public ScenarioGenerator(int modelTime, Scenario state, string name, int timeFrom, int timeTo)
+            : this(modelTime, Scenario.GOOD_WORK, name)
         {
-            if (state == GeneratorState.BAD_WORK)
+            if (state == Scenario.BAD_WORK)
                 PlaceBadData(timeFrom, timeTo);
         }
 

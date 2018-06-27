@@ -6,13 +6,12 @@ using System.Threading.Tasks;
 
 namespace CoreDiploma
 {
-    public enum GeneratorState
+    public enum Scenario
     {
-        ON,
-        OFF,
         GOOD_WORK,
         BAD_WORK,
-        GOOD_SERVICE
+        GOOD_SERVICE,
+        BAD_SERVICE
     }
 
     public interface IGenerator

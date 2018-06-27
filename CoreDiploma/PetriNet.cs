@@ -20,6 +20,7 @@ namespace CoreDiploma
         public int wCoast;
         public int aCoast;
         public int modelTime;
+        public Scenario scenario;
     }
 
     public class PetriNet

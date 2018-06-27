@@ -19,7 +19,7 @@ namespace CoreDiploma
         public void Initialize(NetParams netParams)
         {
             // first generators
-            m_genMgr = new GeneratorsMgr(netParams.netSize, netParams.modelTime);
+            m_genMgr = new GeneratorsMgr(netParams.netSize, netParams.modelTime, netParams.scenario);
             // second net
             m_net = new PetriNet();
             m_net.Initialize(netParams);

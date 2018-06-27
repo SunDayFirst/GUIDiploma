@@ -8,14 +8,9 @@ namespace CoreDiploma
 {
     public class GeneratorFactory
     {
-        public IGenerator GetDummyGenerator(string name)
+        public IGenerator GetScenarioGenerator(int modTime, string name, Scenario scen  = Scenario.GOOD_WORK)
         {
-            return new Generator(name);
-        }
-
-        public IGenerator GetScenarioGenerator(int modTime, string name, GeneratorState state  = GeneratorState.GOOD_WORK)
-        {
-            return new ScenarioGenerator(modTime, state, name);
+            return new ScenarioGenerator(modTime, scen, name);
         }
     }
 }

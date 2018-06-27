@@ -23,6 +23,7 @@ namespace GUIDiploma
         {
             m_net.Initialize(netParams);
             m_modelTime = netParams.modelTime;
+            m_threats.Clear();
             TimerCallback tm = new TimerCallback(OnTimer);
             m_timer = new System.Threading.Timer(tm, 0,Timeout.Infinite, 1000);
         }
@@ -96,12 +97,19 @@ namespace GUIDiploma
         public void SetCurrentAllertInfo(Label infoLbl)
         {
             List<string> allertPC = m_net.GetCurrentAlertInfo();
-            if (allertPC.Count > 0)
+            foreach (var pc in allertPC)
+            {
+                if (!m_threats.ContainsKey(pc))
+                    m_threats.Add(pc, m_curModelTime.ToString());
+            }
+
+
+            if (m_threats.Count > 0)
             {
                 StringBuilder text = new StringBuilder();
-                foreach (var pc in allertPC)
+                foreach (var pc in m_threats)
                 {
-                    text.Append( m_curModelTime.ToString() +  ": Компьютер [" + pc + "] требует внимания администратора\n");
+                    text.Append( pc.Value +  ": Компьютер [" + pc.Key + "] требует внимания администратора\n");
                 }
                 Action informAction = () =>
                 {
@@ -118,19 +126,19 @@ namespace GUIDiploma
             switch (m_net.GetNetStep())
             {
                 case PetriNetStep.READY:
-                    stepName = "Ready";
+                    stepName = "Готов";
                     break;
                 case PetriNetStep.INPUT:
-                    stepName = "Input";
+                    stepName = "Ввод данных";
                     break;
                 case PetriNetStep.FLUSH:
-                    stepName = "Flush";
+                    stepName = "Сброс";
                     break;
                 case PetriNetStep.WARNING:
-                    stepName = "Warning";
+                    stepName = "Анализ угроз";
                     break;
                 case PetriNetStep.ALERT:
-                    stepName = "Alert";
+                    stepName = "Тревога";
                     break;
             }
 
@@ -165,8 +173,8 @@ namespace GUIDiploma
             {
                 if (m_net.GetNetStep() == PetriNetStep.READY)
                     ++m_curModelTime;
-                else if (m_net.GetNetStep() == PetriNetStep.INPUT)
-                    SaveInputData();
+            //    else if (m_net.GetNetStep() == PetriNetStep.INPUT)
+            //        SaveInputData();
                 m_net.NextStep();
                 SetNetState(m_statCtrl.m_netState);
                 SetNetStep(m_statCtrl.m_currentNetStep);
@@ -207,5 +215,6 @@ namespace GUIDiploma
         NetMgr m_net = new NetMgr();
         StatsControls m_statCtrl;
         private System.Threading.Timer m_timer;
+        Dictionary<string, string> m_threats = new Dictionary<string, string>();
     }
 }

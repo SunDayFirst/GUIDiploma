@@ -13,12 +13,24 @@ namespace CoreDiploma
         /// Make pool of generators wthi number as PC name
         /// </summary>
         /// <param name="countPC"> number of PC in net </param>
-        public GeneratorsMgr(int countPC, int modelTime)
+        public GeneratorsMgr(int countPC, int modelTime, Scenario scenario)
         {
             m_modelingTime = modelTime;
-            //GoodServiceScenario(countPC);
-            GoodWorkWIthTreatScenario(countPC);
-            //GoodWorkScenario(countPC);
+            switch (scenario)
+            {
+                case Scenario.GOOD_WORK:
+                    GoodWorkScenario(countPC);
+                    break;
+                case Scenario.BAD_WORK:
+                    GoodWorkWIthTreatScenario(countPC);
+                    break;
+                case Scenario.GOOD_SERVICE:
+                    GoodServiceScenario(countPC);
+                    break;
+                case Scenario.BAD_SERVICE:
+                    GoodServiceWithTreatScenario(countPC);
+                    break;
+            }
         }
 
 
@@ -33,7 +45,7 @@ namespace CoreDiploma
         {
             GeneratorFactory factory = new GeneratorFactory();
             for (int i = 0; i < countPC; ++i)
-                m_generators.Add(new ScenarioGenerator(m_modelingTime, GeneratorState.BAD_WORK, i.ToString(), 5, 45));
+                m_generators.Add(new ScenarioGenerator(m_modelingTime, Scenario.BAD_WORK, i.ToString(), 5, 55));
         }
 
         public void GoodWorkWIthTreatScenario(int countPC)
@@ -44,7 +56,19 @@ namespace CoreDiploma
                 if (i%5 != 0)
                     m_generators.Add(factory.GetScenarioGenerator(m_modelingTime, i.ToString()));
                 else
-                    m_generators.Add(new ScenarioGenerator(m_modelingTime, GeneratorState.BAD_WORK, i.ToString(), 5, m_modelingTime));
+                    m_generators.Add(new ScenarioGenerator(m_modelingTime, Scenario.BAD_WORK, i.ToString(), 5, m_modelingTime));
+            }
+        }
+
+        public void GoodServiceWithTreatScenario(int countPC)
+        {
+            GeneratorFactory factory = new GeneratorFactory();
+            for (int i = 0; i < countPC; ++i)
+            {
+                if (i % 5 != 0)
+                    m_generators.Add(new ScenarioGenerator(m_modelingTime, Scenario.BAD_WORK, i.ToString(), 5, 55));
+                else
+                    m_generators.Add(new ScenarioGenerator(m_modelingTime, Scenario.BAD_WORK, i.ToString(), 5, m_modelingTime));
             }
         }
 
